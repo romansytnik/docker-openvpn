@@ -31,6 +31,6 @@ jobs:
         platforms: linux/arm64/v8
         push: true
         tags: |
-          ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn:${{ env.DATE }}
-          ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn:latest
+          ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn-aarch64:${{ env.DATE }}
+          ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn-aarch64:latest
 
