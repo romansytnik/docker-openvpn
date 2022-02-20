@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [ aarch64 ]
+  workflow_dispatch:
 
 jobs:
   docker:
