@@ -3,9 +3,6 @@ name: CI
 on:
   push:
     branches: [ aarch64 ]
-    tags:
-      - '*'
-      - '!**'
   workflow_dispatch:
   schedule:
     - cron: '0 0 1 * *'
@@ -104,7 +101,7 @@ jobs:
         run: |
           latest_tag="${{ env.REGISTRY_IMAGE }}:latest"
           current_date_tag="${{ env.REGISTRY_IMAGE }}:${{ env.DATE }}"
-          docker buildx imagetools create -t "$latest_tag" -t "$current_date_tag" $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+          docker buildx imagetools create -t "$latest_tag" -t "$current_date_tag" \
             $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)  
       -
         name: Inspect image
