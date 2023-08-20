@@ -52,6 +52,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
       -
+        name: Generate current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      -
         name: Export digest
         run: |
           mkdir -p /tmp/digests
@@ -96,7 +100,9 @@ jobs:
         name: Create manifest list and push
         working-directory: /tmp/digests
         run: |
-          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+          latest_tag="${{ env.REGISTRY_IMAGE }}:latest"
+          current_date_tag="${{ env.REGISTRY_IMAGE }}:${{ steps.date.outputs.date }}"
+          docker buildx imagetools create -t "$latest_tag" -t "$current_date_tag" $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(printf '${{ env.REGISTRY_IMAGE }}@sha256:%s ' *)
       -
         name: Inspect image
