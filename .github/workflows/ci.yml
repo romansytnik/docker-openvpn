@@ -33,8 +33,30 @@ jobs:
         context: .
         file: ./Dockerfile
         platforms: |
-          linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+          linux/amd64,linux/arm64
         push: true
         tags: |
           ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn:${{ env.DATE }}
           ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn:latest
+    - name: Build and push armv7
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.armv7
+        platforms: |
+          linux/arm/v7
+        push: true
+        tags: |
+          ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn:armv7-${{ env.DATE }}
+          ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn:armv7-latest
+    - name: Build and push armv6
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.armv6
+        platforms: |
+          linux/arm/v6
+        push: true
+        tags: |
+          ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn:armv6-${{ env.DATE }}
+          ${{ secrets.DOCKER_HUB_USERNAME }}/openvpn:armv6-latest
